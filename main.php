@@ -87,7 +87,19 @@ while (true) {
     }
 
     break;
-  } else {
+  } elseif ($argc == 3 && $argv[1] == 'delete') {
+    if (is_numeric($argv[2]) && $argv[2] < count($task_array)) {
+      array_splice($task_array, $argv[2], 1);
+      $file = fopen("tasks.json", "w");
+      fwrite($file, json_encode($task_array));
+
+      fclose($file);
+
+      echo "Your task has been deleted successfully!";
+    } else {
+      echo 'something went wrong';
+      break;
+    }
     break;
   }
 }
