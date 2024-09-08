@@ -23,14 +23,11 @@ class Task
 
 while (true) {
 
-  if ($argc == 3 && $argv[1] == "add") {
-
-    if (!file_exists("tasks.json")) {
-      $file = fopen("tasks.json", "w");
-      fwrite($file, "[]"); // initialize json array
-      fclose($file);
-    }
-
+  if (!file_exists("tasks.json")) {
+    $file = fopen("tasks.json", "w");
+    fwrite($file, "[]"); // initialize json array
+    fclose($file);
+  } else {
     $file = fopen("tasks.json", "r");
 
     $tasks = fread($file, filesize("tasks.json"));
@@ -39,6 +36,9 @@ while (true) {
 
     // decode json to php object
     $task_array = json_decode($tasks, false);
+  }
+
+  if ($argc == 3 && $argv[1] == "add") {
 
     // new id is the last id added + 1 (or the number of tasks added)
     $new_id = count($task_array);
@@ -55,7 +55,7 @@ while (true) {
     fclose($file);
 
     echo "Your task has been added successfully!";
-    
+
     break;
-  }
+  } // elseif ($argc == 4 && $argv[1] == 'Update' && ) and check that the id is available in the list of tasks
 }
