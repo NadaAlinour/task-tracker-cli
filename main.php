@@ -101,5 +101,11 @@ while (true) {
       break;
     }
     break;
+  } elseif($argc == 2 && $argv[1] == 'list') {
+    foreach($task_array as $task) {
+      echo "ID: " . $task->id . "    Description: " . $task->description . "\n";
+    }
+
+    break;
   }
 }
