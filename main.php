@@ -27,6 +27,7 @@ while (true) {
     $file = fopen("tasks.json", "w");
     fwrite($file, "[]"); // initialize json array
     fclose($file);
+    $task_array = [];
   } else {
     $file = fopen("tasks.json", "r");
 
@@ -57,5 +58,36 @@ while (true) {
     echo "Your task has been added successfully!";
 
     break;
-  } // elseif ($argc == 4 && $argv[1] == 'Update' && ) and check that the id is available in the list of tasks
+  } elseif ($argc == 4 && $argv[1] == 'update') {
+    if (is_numeric($argv[2]) && intval($argv[2]) < count($task_array) && $argv[3] != '') {
+
+      // find the task with the supplied id and update the description
+      foreach ($task_array as &$task) {
+        if ($task->id == $argv[2]) {
+          $task->description = $argv[3];
+
+          // also update the last_updated property with the current date and time
+          $task->last_updated = date("Y/m/d") . " " . date("H:i");
+
+          $is_updated = true;
+          break;
+        }
+      }
+
+      // write to update file
+      $file = fopen("tasks.json", "w");
+      fwrite($file, json_encode($task_array));
+
+      fclose($file);
+
+      echo "Your task has been updated successfully!";
+    } else {
+      echo "something went wrong";
+      break;
+    }
+
+    break;
+  } else {
+    break;
+  }
 }
